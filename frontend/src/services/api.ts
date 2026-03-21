@@ -95,3 +95,23 @@ export async function analyzeResumeFromText(resumeText: string) {
   }
   return response.json();
 }
+
+// --- SKILLS ---
+export async function saveSkills(userId: string, skills: any[]) {
+  const response = await fetch(`${BASE_URL}/api/profile/skills/save`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: userId, skills }),
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || "Failed to save skills");
+  }
+  return response.json();
+}
+
+export async function getSkills(userId: string) {
+  const response = await fetch(`${BASE_URL}/api/profile/skills/${userId}`);
+  if (!response.ok) throw new Error("Failed to fetch skills");
+  return response.json();
+}

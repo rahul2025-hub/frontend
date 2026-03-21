@@ -39,17 +39,19 @@ function App() {
   const [userType, setUserType] = useState<UserType>(null);
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
   const [initialLoginType, setInitialLoginType] = useState<UserType>(null);
 
-  const handleUserTypeSelect = (type: UserType, name: string) => {
+  const handleUserTypeSelect = (type: UserType) => {
     setInitialLoginType(type);
     setCurrentView('login');
   };
 
-  const handleLogin = (type: UserType, name: string, email: string) => {
+  const handleLogin = (type: UserType, name: string, email: string, id: string) => {
     setUserType(type);
     setUserName(name);
     setUserEmail(email);
+    setUserId(id);
     setCurrentView('dashboard');
   };
 
@@ -57,6 +59,7 @@ function App() {
     setUserType(null);
     setUserName('');
     setUserEmail('');
+    setUserId('');
     setInitialLoginType(null);
     setCurrentView('landing');
   };
@@ -72,8 +75,8 @@ function App() {
 
   if (currentView === 'login') {
     return (
-      <LoginPage 
-        onLogin={handleLogin} 
+      <LoginPage
+        onLogin={handleLogin}
         onBackToLanding={handleBackToLanding}
         initialUserType={initialLoginType}
       />
@@ -83,9 +86,17 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       {userType === 'jobseeker' ? (
-        <JobSeekerDashboard userName={userName} onLogout={handleLogout} />
+        <JobSeekerDashboard
+          userName={userName}
+          userId={userId}
+          onLogout={handleLogout}
+        />
       ) : (
-        <RecruiterDashboard userName={userName} onLogout={handleLogout} />
+        <RecruiterDashboard
+          userName={userName}
+          userId={userId}
+          onLogout={handleLogout}
+        />
       )}
     </div>
   );

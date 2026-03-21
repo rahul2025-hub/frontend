@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { Plus, X, Award, Sparkles } from 'lucide-react';
+import { Plus, X, Award, Sparkles, Save, CheckCircle } from 'lucide-react';
 import { Skill } from '../App';
+import { saveSkills } from '../services/api';
 
 interface SkillProfileProps {
   skills: Skill[];
   setSkills: (skills: Skill[]) => void;
+  userId: string;
 }
 
-export function SkillProfile({ skills, setSkills }: SkillProfileProps) {
+export function SkillProfile({ skills, setSkills, userId  }: SkillProfileProps) {
   const [showAddSkill, setShowAddSkill] = useState(false);
   const [newSkill, setNewSkill] = useState({ name: '', level: 50, category: 'Programming' });
 
@@ -45,6 +47,24 @@ export function SkillProfile({ skills, setSkills }: SkillProfileProps) {
 
   const categories = Array.from(new Set(skills.map(s => s.category)));
 
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  const handleSaveToDatabase = async () => {
+    if (!userId) return;
+    setIsSaving(true);
+    setSaveSuccess(false);
+    try {
+      await saveSkills(userId, skills);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (err) {
+      console.error('Failed to save skills:', err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
@@ -62,12 +82,27 @@ export function SkillProfile({ skills, setSkills }: SkillProfileProps) {
         </div>
       </div>
 
-      {/* Info banner */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
-        <Sparkles className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-        <p className="text-sm text-blue-800">
-          Add your real skills here. The <strong>Gap Analysis</strong> and <strong>Career Path</strong> tabs will use these skills to give you personalised AI recommendations.
-        </p>
+      {/* Info banner + Save button */}
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <Sparkles className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-blue-800">
+            Add your real skills here. The <strong>Gap Analysis</strong> and <strong>Career Path</strong> tabs will use these skills for personalised AI recommendations.
+          </p>
+        </div>
+        <button
+          onClick={handleSaveToDatabase}
+          disabled={isSaving}
+          className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all text-sm flex-shrink-0 disabled:opacity-50"
+        >
+          {isSaving ? (
+            <span>Saving...</span>
+          ) : saveSuccess ? (
+            <><CheckCircle className="w-4 h-4" /> Saved!</>
+          ) : (
+            <><Save className="w-4 h-4" /> Save Skills</>
+          )}
+        </button>
       </div>
 
       {/* Skills by category */}

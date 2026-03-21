@@ -7,6 +7,7 @@ import { JobPosting } from '../App';
 
 interface RecruiterDashboardProps {
   userName: string;
+  userId: string;
   onLogout: () => void;
 }
 
@@ -27,7 +28,7 @@ const initialJobs: JobPosting[] = [
   },
 ];
 
-export function RecruiterDashboard({ userName, onLogout }: RecruiterDashboardProps) {
+export function RecruiterDashboard({ userName, userId, onLogout }: RecruiterDashboardProps) {
   const [activeTab, setActiveTab] = useState<Tab>('posted-jobs');
   const [jobs, setJobs] = useState<JobPosting[]>(initialJobs);
 

@@ -9,6 +9,7 @@ import { Skill } from '../App';
 
 interface JobSeekerDashboardProps {
   userName: string;
+  userId: string;
   onLogout: () => void;
 }
 
@@ -24,7 +25,7 @@ const defaultSkills: Skill[] = [
   { name: 'HTML/CSS', level: 90, category: 'Frontend' },
 ];
 
-export function JobSeekerDashboard({ userName, onLogout }: JobSeekerDashboardProps) {
+export function JobSeekerDashboard({ userName, userId, onLogout }: JobSeekerDashboardProps) {
   const [activeTab, setActiveTab] = useState<Tab>('profile');
 
   // Skills state lifted here — shared across ALL tabs
@@ -87,7 +88,7 @@ export function JobSeekerDashboard({ userName, onLogout }: JobSeekerDashboardPro
         {/* Content Area — skills passed as props to all tabs */}
         <div>
           {activeTab === 'profile' && (
-            <SkillProfile skills={skills} setSkills={setSkills} />
+            <SkillProfile skills={skills} setSkills={setSkills} userId={userId} />
           )}
           {activeTab === 'resume-analyzer' && <ResumeAnalyzer />}
           {activeTab === 'gap-analysis' && (
