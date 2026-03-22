@@ -6,6 +6,7 @@ import { CareerPathView } from './CareerPathView';
 import { JobRecommendations } from './JobRecommendations';
 import { ResumeAnalyzer } from './ResumeAnalyzer';
 import { Skill } from '../App';
+import { PsychometricTest } from './PsychometricTest';
 
 interface JobSeekerDashboardProps {
   userName: string;
@@ -13,7 +14,7 @@ interface JobSeekerDashboardProps {
   onLogout: () => void;
 }
 
-type Tab = 'profile' | 'resume-analyzer' | 'gap-analysis' | 'career-path' | 'job-recommendations';
+type Tab = 'profile' | 'resume-analyzer' | 'gap-analysis' | 'career-path' | 'job-recommendations' | 'assessment';
 
 // Default skills to start with
 const defaultSkills: Skill[] = [
@@ -61,13 +62,15 @@ export function JobSeekerDashboard({ userName, userId, onLogout }: JobSeekerDash
       <div className="container mx-auto px-6 py-8">
         {/* Navigation Tabs */}
         <div className="bg-white rounded-xl shadow-sm mb-8 p-2 overflow-x-auto">
-          <div className="flex md:grid md:grid-cols-5 gap-2 min-w-max md:min-w-0">
+          <div className="flex overflow-x-auto">
             {[
               { id: 'profile', icon: User, label: 'Profile' },
+              { id: 'assessment', icon: Brain, label: 'Assessment' },
               { id: 'resume-analyzer', icon: FileSearch, label: 'Resume Analyzer' },
               { id: 'gap-analysis', icon: Target, label: 'Gap Analysis' },
               { id: 'career-path', icon: TrendingUp, label: 'Career Path' },
               { id: 'job-recommendations', icon: Briefcase, label: 'Jobs' },
+              
             ].map(({ id, icon: Icon, label }) => (
               <button
                 key={id}
@@ -98,6 +101,7 @@ export function JobSeekerDashboard({ userName, userId, onLogout }: JobSeekerDash
             <CareerPathView skills={skills} />
           )}
           {activeTab === 'job-recommendations' && <JobRecommendations />}
+          {activeTab === 'assessment' && <PsychometricTest />}
         </div>
       </div>
     </div>
