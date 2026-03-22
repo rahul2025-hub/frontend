@@ -89,6 +89,7 @@ function App() {
         <JobSeekerDashboard
           userName={userName}
           userId={userId}
+          userEmail={userEmail}
           onLogout={handleLogout}
         />
       ) : (

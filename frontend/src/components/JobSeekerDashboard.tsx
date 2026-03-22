@@ -11,6 +11,7 @@ import { PsychometricTest } from './PsychometricTest';
 interface JobSeekerDashboardProps {
   userName: string;
   userId: string;
+  userEmail: string;
   onLogout: () => void;
 }
 
@@ -26,7 +27,7 @@ const defaultSkills: Skill[] = [
   { name: 'HTML/CSS', level: 90, category: 'Frontend' },
 ];
 
-export function JobSeekerDashboard({ userName, userId, onLogout }: JobSeekerDashboardProps) {
+export function JobSeekerDashboard({ userName, userId, userEmail, onLogout }: JobSeekerDashboardProps) {
   const [activeTab, setActiveTab] = useState<Tab>('profile');
 
   // Skills state lifted here — shared across ALL tabs
@@ -91,7 +92,7 @@ export function JobSeekerDashboard({ userName, userId, onLogout }: JobSeekerDash
         {/* Content Area — skills passed as props to all tabs */}
         <div>
           {activeTab === 'profile' && (
-            <SkillProfile skills={skills} setSkills={setSkills} userId={userId} />
+            <SkillProfile skills={skills} setSkills={setSkills} userId={userId} userName={userName} userEmail={userEmail} />
           )}
           {activeTab === 'resume-analyzer' && <ResumeAnalyzer />}
           {activeTab === 'gap-analysis' && (

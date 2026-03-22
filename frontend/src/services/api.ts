@@ -115,3 +115,37 @@ export async function getSkills(userId: string) {
   if (!response.ok) throw new Error("Failed to fetch skills");
   return response.json();
 }
+
+// --- ADZUNA REAL INDIAN JOBS ---
+export async function searchJobs(keywords: string = "software developer", location: string = "Mumbai", results: number = 10) {
+  const params = new URLSearchParams({ keywords, location, results: results.toString() });
+  const response = await fetch(`${BASE_URL}/api/jobs/search?${params}`);
+  if (!response.ok) throw new Error("Failed to fetch jobs from Adzuna");
+  return response.json();
+}
+
+// --- USER PROFILE ---
+export async function getProfile(userId: string) {
+  const response = await fetch(`${BASE_URL}/api/profile/info/${userId}`);
+  if (!response.ok) throw new Error("Failed to fetch profile");
+  return response.json();
+}
+
+export async function updateProfile(userId: string, profileData: any) {
+  const response = await fetch(`${BASE_URL}/api/profile/info/update`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: userId, ...profileData }),
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || "Failed to update profile");
+  }
+  return response.json();
+}
+
+export async function getSkillSuggestions() {
+  const response = await fetch(`${BASE_URL}/api/profile/skill-suggestions`);
+  if (!response.ok) throw new Error("Failed to fetch skill suggestions");
+  return response.json();
+}
